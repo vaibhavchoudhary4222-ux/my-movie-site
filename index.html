@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Free Movies</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #0d0d0d;
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      text-align: center;
+      background: #1a1a1a;
+      padding: 20px;
+    }
+    input[type="text"] {
+      width: 80%;
+      max-width: 400px;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      outline: none;
+      font-size: 16px;
+    }
+    .movie-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+    .movie-card {
+      background: #1c1c1c;
+      border-radius: 10px;
+      overflow: hidden;
+      text-align: center;
+      transition: transform 0.2s ease-in-out;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+    .movie-card:hover {
+      transform: scale(1.05);
+    }
+    .movie-card img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+    }
+    .movie-card h3 {
+      margin: 10px 0;
+    }
+    .movie-card a {
+      display: inline-block;
+      margin: 10px;
+      padding: 8px 12px;
+      background: #e50914;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+    .movie-card a:hover {
+      background: #ff3c00;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🎬 Free Movies</h1>
+    <input type="text" id="searchBar" placeholder="Search movies..." />
+  </header>
+
+  <div class="movie-container" id="movieContainer"></div>
+
+  <script>
+    const movies = [
+      {
+        title: "Big Buck Bunny",
+        img: "https://peach.blender.org/wp-content/uploads/title_anouncement.jpg",
+        url: "https://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_640x360.m4v"
+      },
+      {
+        title: "Sintel",
+        img: "https://download.blender.org/durian/poster/sintel_poster.jpg",
+        url: "https://download.blender.org/durian/trailer/sintel_trailer-480p.mp4"
+      },
+      {
+        title: "Tears of Steel",
+        img: "https://mango.blender.org/wp-content/uploads/2013/05/tears_of_steel_poster.jpg",
+        url: "https://download.blender.org/peach/trailer/trailer_480p.mov"
+      }
+    ];
+
+    const movieContainer = document.getElementById("movieContainer");
+    const searchBar = document.getElementById("searchBar");
+
+    function showMovies(list) {
+      movieContainer.innerHTML = "";
+      list.forEach(movie => {
+        const div = document.createElement("div");
+        div.className = "movie-card";
+        div.innerHTML = `
+          <img src="${movie.img}" alt="${movie.title}">
+          <h3>${movie.title}</h3>
+          <a href="${movie.url}" target="_blank" download>Download</a>
+        `;
+        movieContainer.appendChild(div);
+      });
+    }
+
+    searchBar.addEventListener("input", e => {
+      const value = e.target.value.toLowerCase();
+      const filtered = movies.filter(m => m.title.toLowerCase().includes(value));
+      showMovies(filtered);
+    });
+
+    showMovies(movies);
+  </script>
+</body>
+</html>
