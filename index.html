@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -51,17 +51,42 @@
     .movie-card h3 {
       margin: 10px 0;
     }
-    .movie-card a {
-      display: inline-block;
-      margin: 10px;
+    .movie-card button {
+      margin: 8px;
       padding: 8px 12px;
       background: #e50914;
+      border: none;
       color: white;
-      text-decoration: none;
       border-radius: 5px;
+      cursor: pointer;
     }
-    .movie-card a:hover {
+    .movie-card button:hover {
       background: #ff3c00;
+    }
+    #videoPlayer {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.95);
+      width: 90%;
+      max-width: 800px;
+      z-index: 1000;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    video {
+      width: 100%;
+      height: auto;
+    }
+    #closeBtn {
+      background: red;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+      width: 100%;
     }
   </style>
 </head>
@@ -73,6 +98,11 @@
 
   <div class="movie-container" id="movieContainer"></div>
 
+  <div id="videoPlayer">
+    <button id="closeBtn">Close</button>
+    <video id="video" controls></video>
+  </div>
+
   <script>
     const movies = [
       {
@@ -81,19 +111,17 @@
         url: "https://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_640x360.m4v"
       },
       {
-        title: "Sintel",
-        img: "https://download.blender.org/durian/poster/sintel_poster.jpg",
-        url: "https://download.blender.org/durian/trailer/sintel_trailer-480p.mp4"
-      },
-      {
-        title: "Tears of Steel",
-        img: "https://mango.blender.org/wp-content/uploads/2013/05/tears_of_steel_poster.jpg",
-        url: "https://download.blender.org/peach/trailer/trailer_480p.mov"
+       title: "Chalo Bulava Aaya Hai",
+       img: "https://via.placeholder.com/300x400?text=No+Image",
+       url: "https://drive.google.com/uc?export=download&id=1TnsVmL6qdCYUDik3_P3Mnw31Lw6ohAE1"
       }
     ];
 
     const movieContainer = document.getElementById("movieContainer");
     const searchBar = document.getElementById("searchBar");
+    const videoPlayer = document.getElementById("videoPlayer");
+    const video = document.getElementById("video");
+    const closeBtn = document.getElementById("closeBtn");
 
     function showMovies(list) {
       movieContainer.innerHTML = "";
@@ -103,11 +131,22 @@
         div.innerHTML = `
           <img src="${movie.img}" alt="${movie.title}">
           <h3>${movie.title}</h3>
-          <a href="${movie.url}" target="_blank" download>Download</a>
+          <button onclick="playMovie('${movie.url}')">▶️ Watch Now</button>
         `;
         movieContainer.appendChild(div);
       });
     }
+
+    function playMovie(link) {
+      video.src = link;
+      videoPlayer.style.display = "block";
+      video.play();
+    }
+
+    closeBtn.addEventListener("click", () => {
+      video.pause();
+      videoPlayer.style.display = "none";
+    });
 
     searchBar.addEventListener("input", e => {
       const value = e.target.value.toLowerCase();
